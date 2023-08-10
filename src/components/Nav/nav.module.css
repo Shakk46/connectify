@@ -1,0 +1,38 @@
+.container {
+    height: 220px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    position: sticky;
+    top: 10px;
+}
+.container > h3 {
+    text-align: center;
+    font-weight: normal;
+    margin-bottom:10px;
+    border-bottom:1px solid black;
+    height: 30px;
+
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.listElement {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    box-shadow: 1px 2px 5px grey;
+}
+.listElement > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: normal;
+}

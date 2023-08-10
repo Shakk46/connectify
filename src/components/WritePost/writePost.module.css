@@ -1,0 +1,30 @@
+.container {
+    background-color: white;
+    padding: 10px;
+    
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+.input {
+    display: block;
+    width: 70%;
+    height: auto;
+    overflow: hidden;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 20px;
+    font-weight: normal;
+    padding: 15px 0;
+    word-wrap: break-word;
+    resize: none;
+}
+.submit {
+    width: 100px;
+    height: 40px;
+    background-color: grey;
+}

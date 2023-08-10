@@ -1,0 +1,40 @@
+.container {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom:1px solid black ;
+    padding-bottom:10px;
+}
+.profile > img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.profile > p {
+    font-weight: normal;
+}
+
+.content {
+    padding: 20px 0px;
+    font-weight: normal;
+}
+
+.actions {
+    display: flex;
+    gap: 30px;
+}
+.actions > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.actions > div > p {
+    font-weight: normal;
+}
