@@ -2,19 +2,21 @@ import {WritePost} from '../components/WritePost/WritePost'
 import { Post } from '../components/Post/Post'
 import { Nav } from "../components/Nav/Nav"
 import { useEffect, useState } from "react"
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from '../firebase';
   
 export const Home = () => {
     const [notes, setNotes] = useState([])
 
     const getNotes = async () => {
-      const querySnapshot = await getDocs(collection(db, "notes"));
+      // a query to order notes by date of creation
+      const q = query(collection(db, "notes"), orderBy("date", 'desc'));
+
+      const querySnapshot = await getDocs(q);
 
       const data = []
 
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         data.push({...doc.data(), id:doc.id})
       });
 

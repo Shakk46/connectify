@@ -17,8 +17,11 @@ export function WritePost({updateNotes}) {
     const handleSubmit = async(event) => {
         event.preventDefault()
 
+        console.log(Date.now())
+
         await addDoc(collection(db, "notes"), {
             content: inputValue,
+            date:Date.now(),
             likes: [],
             userData: {
                 id:currentUser.uid,

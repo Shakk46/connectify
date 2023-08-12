@@ -2,9 +2,10 @@ import { useReducer, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
-import styles from './post.module.css'
 import { useEffect } from 'react';
 import { UserAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom'
+import styles from './post.module.css'
 export function Post({props}) {
     const note = props
     const user = note.userData
@@ -62,11 +63,11 @@ export function Post({props}) {
     }
 
     return(
-        <div className={`${styles.container} `}>
-            <div className={styles.profile}>
+        <div className={`${styles.container}`}>
+            <Link to={`/profile?id=${user.id}`} state={user.id} className={styles.profile}>
                 <img src={user.photoURL} />
                 <p>{user.name}</p>
-            </div>
+            </Link>
             <div className={styles.content}>
                 {note.content}
             </div>

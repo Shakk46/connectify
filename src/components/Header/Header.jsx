@@ -12,7 +12,7 @@ export function Header() {
             </div>
 
             <div className={styles.right}>
-                <Link to={userAuth.user ? '/profile' : '/auth'} className={styles.profile}>
+                <Link to={userAuth.user ? '/MyProfile' : '/auth'} className={styles.profile}>
                     <img src="https://cdn-icons-png.flaticon.com/512/3106/3106773.png" alt="profile icon" />
                     Profile
                 </Link>
