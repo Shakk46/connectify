@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { AuthContextProvider } from './context/AuthContext'
@@ -20,7 +19,6 @@ function App() {
         </Routes>
         <Nav />
       </main>
-
     </AuthContextProvider>
     
   )

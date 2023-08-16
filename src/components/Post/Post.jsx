@@ -64,7 +64,7 @@ export function Post({props}) {
 
     return(
         <div className={`${styles.container}`}>
-            <Link to={`/profile?id=${user.id}`} state={user.id} className={styles.profile}>
+            <Link to={user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`} state={user.id} className={styles.profile}>
                 <img src={user.photoURL} />
                 <p>{user.name}</p>
             </Link>

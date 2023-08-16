@@ -1,8 +1,7 @@
 import {WritePost} from '../components/WritePost/WritePost'
 import { Post } from '../components/Post/Post'
-import { Nav } from "../components/Nav/Nav"
 import { useEffect, useState } from "react"
-import { collection, doc, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from '../firebase';
   
 export const Home = () => {
@@ -33,7 +32,6 @@ export const Home = () => {
         <>
           <div>
             <WritePost updateNotes={getNotes}/>
-            <h2 className='heading'>Feed</h2>
             <div className='posts'>
               {notes.map(note => {
                 return <Post 
