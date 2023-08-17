@@ -1,13 +1,17 @@
+import { LoadingContext } from '/src/context/LoaderContext.jsx'
 import {WritePost} from '../components/WritePost/WritePost'
 import { Post } from '../components/Post/Post'
-import { useEffect, useState } from "react"
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { useEffect, useState, useContext } from "react"
+import { collection, getDocs, query, orderBy, arrayRemove } from "firebase/firestore";
 import { db } from '../firebase';
   
 export const Home = () => {
     const [notes, setNotes] = useState([])
+    const loader = useContext(LoadingContext)
+    
 
     const getNotes = async () => {
+      loader.setLoading(true)
       // a query to order notes by date of creation
       const q = query(collection(db, "notes"), orderBy("date", 'desc'));
 
@@ -22,7 +26,10 @@ export const Home = () => {
       console.log(data);
       
       setNotes(data)
+      loader.setLoading(false)
     }
+
+    
 
     useEffect(() => {
       getNotes()

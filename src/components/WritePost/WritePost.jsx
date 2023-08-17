@@ -39,7 +39,7 @@ export function WritePost({updateNotes}) {
     return(
         <div className={styles.container}>
             <form action="#" className={styles.form} onSubmit={handleSubmit}>
-              <textarea value={inputValue} onChange={() => {setValue(event.target.value)}} type="text" className={styles.input} placeholder='Write what is up.' onInput={adjustHeight}/>
+              <textarea value={inputValue} onChange={() => {setValue(event.target.value)}} type="text" className={styles.input} placeholder='Write what is up. (max. characters: 120)' onInput={adjustHeight} maxLength='120'/>
               <button type="submit" className={styles.submit}>Submit</button>
             </form>
         </div>

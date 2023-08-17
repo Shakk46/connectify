@@ -1,14 +1,15 @@
-import { useReducer, useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useReducer, useState, useEffect, useContext } from 'react'
+import { LoadingContext } from '../../context/LoaderContext';
+import { UserAuth } from '../../context/AuthContext';
+import { useNavigate, Link } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
-import { useEffect } from 'react';
-import { UserAuth } from '../../context/AuthContext';
-import { Link } from 'react-router-dom'
 import styles from './post.module.css'
 export function Post({props}) {
     const note = props
     const user = note.userData
+
+    const loader = useContext(LoadingContext)
     
     const navigate = useNavigate()
 
@@ -43,6 +44,7 @@ export function Post({props}) {
 
     const handleLiked = async () => {
         if(currentUser) {
+            loader.setLoading(true)
             const noteRef = doc(db, "notes", note.id);
             if(!liked) {
                 await updateDoc(noteRef, {
@@ -56,6 +58,7 @@ export function Post({props}) {
             }
 
             setLiked(!liked)
+            loader.setLoading(false)
         }else {
             navigate('/auth')
         }
