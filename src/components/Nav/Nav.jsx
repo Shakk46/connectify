@@ -9,10 +9,10 @@ export function Nav() {
                     <Link to={'/'}>Home</Link>
                 </li>
                 <li className={styles.listElement}>
-                    <button>Friends</button>
+                    <Link to={'/'}>Friends</Link>
                 </li>
                 <li className={styles.listElement}>
-                    <button>My Posts</button>
+                    <Link to={'/'}>My Posts</Link>
                 </li>
             </ul>
         </nav>

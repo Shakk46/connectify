@@ -1,7 +1,8 @@
 .container {
     background-color: white;
     padding: 10px;
-    
+    border-radius: 8px;
+    border-bottom-left-radius: 0;
 }
 .form {
     display: flex;

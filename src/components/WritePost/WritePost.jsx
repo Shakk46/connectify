@@ -23,6 +23,7 @@ export function WritePost({updateNotes}) {
             content: inputValue,
             date:Date.now(),
             likes: [],
+            comments: [],
             userData: {
                 id:currentUser.uid,
                 name:currentUser.displayName,
