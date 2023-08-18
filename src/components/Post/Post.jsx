@@ -47,15 +47,15 @@ export function Post({props}) {
             
             if(!isLiked) {
                 await updateDoc(noteRef, {
-                    likes:[...note.likes, currentUser.uid]
+                    likes:[...likes, currentUser.uid]
                 });
-                setLikes([...note.likes, currentUser.uid])
+                setLikes([...likes, currentUser.uid])
             }else {
-                const userId = note.likes.indexOf(currentUser.uid)
+                const userId = likes.indexOf(currentUser.uid)
                 await updateDoc(noteRef, {
-                    likes:[...note.likes.slice(0, userId), ...note.likes.slice(userId + 1, note.likes.length)]
+                    likes:[...likes.slice(0, userId), ...likes.slice(userId + 1, likes.length)]
                 });
-                setLikes([...note.likes.slice(0, userId), ...note.likes.slice(userId + 1, note.likes.length)])
+                setLikes([...likes.slice(0, userId), ...likes.slice(userId + 1, likes.length)])
             }
 
             
@@ -77,7 +77,7 @@ export function Post({props}) {
             </div>
             <div className={styles.actions}>
                 <div className={styles.like}>
-                    <button onClick={handleLiked}><span className="material-icons">{isLiked ?'thumb_up_alt' :  'thumb_up_off_alt'}</span></button>
+                    <button onClick={handleLiked}><span className="material-icons">{isLiked ? 'thumb_up_alt' :  'thumb_up_off_alt'}</span></button>
                     <p>{likes.length}</p>
                 </div>
                 <div className={styles.comment}>
