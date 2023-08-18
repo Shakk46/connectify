@@ -14,7 +14,11 @@ export function Post({props}) {
     const navigate = useNavigate()
 
 
-    const currentUser = UserAuth().user
+    let currentUser = UserAuth().user
+    if(!currentUser) {
+        currentUser = false
+    }
+
     const [liked, setLiked] = useState(false)
     const [commentOpened, setComment] = useState(false)
 
@@ -32,12 +36,11 @@ export function Post({props}) {
             
         }
 
-        console.log(checkLiked());
-
-        
         if(checkLiked()) {
             setLiked(true)
         }
+
+        console.log('rendered')
         
         
     }, [])
@@ -53,10 +56,11 @@ export function Post({props}) {
             }else {
                 const userId = note.likes.indexOf(currentUser.uid)
                 await updateDoc(noteRef, {
-                    likes:[...note.likes.slice(0, userId - 1), ...note.likes.slice(userId, note.likes.length)]
+                    likes:[...note.likes.slice(0, userId), ...note.likes.slice(userId + 1, note.likes.length)]
                 });
             }
 
+            
             setLiked(!liked)
             loader.setLoading(false)
         }else {
@@ -64,7 +68,6 @@ export function Post({props}) {
         }
         
     }
-
     return(
         <div className={`${styles.container}`}>
             <Link to={user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`} state={user.id} className={styles.profile}>
@@ -77,7 +80,7 @@ export function Post({props}) {
             <div className={styles.actions}>
                 <div className={styles.like}>
                     <button onClick={handleLiked}><span className="material-icons">{liked ?'thumb_up_alt' :  'thumb_up_off_alt'}</span></button>
-                    <p>{note.likesNumber}</p>
+                    <p>{note.likes.length}</p>
                 </div>
                 <div className={styles.comment}>
                     <button onClick={() => setComment(!commentOpened)}><span className="material-icons">{commentOpened ?'chat' :  'chat_bubble_outline'}</span></button>

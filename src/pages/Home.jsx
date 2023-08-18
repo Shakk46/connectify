@@ -22,14 +22,14 @@ export const Home = () => {
       querySnapshot.forEach((doc) => {
         data.push({...doc.data(), id:doc.id})
       });
-
-      console.log(data);
       
       setNotes(data)
       loader.setLoading(false)
     }
 
-    
+    const updateNotes = async () => {
+      
+    }
 
     useEffect(() => {
       getNotes()
@@ -43,6 +43,7 @@ export const Home = () => {
               {notes.map(note => {
                 return <Post 
                     props={note}
+                    key={note.id}
                   />
               })}
             </div>

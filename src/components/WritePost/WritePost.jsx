@@ -30,6 +30,7 @@ export function WritePost({updateNotes}) {
             }
           });
 
+        
         updateNotes()
         
           
