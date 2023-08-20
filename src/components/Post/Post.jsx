@@ -31,7 +31,7 @@ export function Post({props}) {
     }
     let isLiked = checkLiked()
 
-    const [commentOpened, setComment] = useState(false)
+    const [commentOpened, setCommentStatus] = useState(false)
 
     
 
@@ -43,7 +43,6 @@ export function Post({props}) {
         if(currentUser) {
             loader.setLoading(true)
             const noteRef = doc(db, "notes", note.id);
-            console.log(isLiked);
             
             if(!isLiked) {
                 await updateDoc(noteRef, {
@@ -81,8 +80,8 @@ export function Post({props}) {
                     <p>{likes.length}</p>
                 </div>
                 <div className={styles.comment}>
-                    <button onClick={() => setComment(!commentOpened)}><span className="material-icons">{commentOpened ?'chat' :  'chat_bubble_outline'}</span></button>
-                    <p>{note.commentsNumber}</p>
+                    <button onClick={() => setCommentStatus(!commentOpened)}><span className="material-icons">{commentOpened ?'chat' :  'chat_bubble_outline'}</span></button>
+                    <p>{note.comments.length}</p>
                 </div>
             </div>
             {commentOpened && <CommentSection id={note.id}/>}

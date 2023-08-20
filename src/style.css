@@ -12,6 +12,13 @@ a {
     text-decoration: none;
     color: unset;
 }
+input {
+    outline: none;
+    border: none;
+}
+input:focus {
+    outline: none;
+}
 button {
     background-color: unset;
     border: none;
