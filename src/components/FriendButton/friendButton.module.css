@@ -1,0 +1,8 @@
+.addFriend {
+    font-weight: normal;
+    width: 100px;
+    height: 40px;
+    background-color: lightblue;
+    border-radius: 5px;
+    align-self: flex-start;
+}
