@@ -12,7 +12,7 @@ export function Nav() {
                     <Link to={'/friends'}>Friends</Link>
                 </li>
                 <li className={styles.listElement}>
-                    <Link to={'/'}>My Posts</Link>
+                    <Link to={'/MyPosts'}>My Posts</Link>
                 </li>
             </ul>
         </nav>

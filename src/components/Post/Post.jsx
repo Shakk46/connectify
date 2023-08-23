@@ -6,19 +6,13 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
 import styles from './post.module.css'
 import { CommentSection } from '../CommentSection/CommentSection';
-export function Post({props}) {
+export function Post({props, currentUser}) {
     const note = props
     const user = note.userData
 
     const loader = useContext(LoadingContext)
     
     const navigate = useNavigate()
-
-
-    let currentUser = UserAuth().user
-    if(!currentUser) {
-        currentUser = false
-    }
 
     const [likes, setLikes] = useState(note.likes)
     const checkLiked = () => {
@@ -43,6 +37,7 @@ export function Post({props}) {
         if(currentUser) {
             loader.setLoading(true)
             const noteRef = doc(db, "notes", note.id);
+            
             
             if(!isLiked) {
                 await updateDoc(noteRef, {

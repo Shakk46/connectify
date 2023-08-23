@@ -2,11 +2,13 @@ import { LoadingContext } from '/src/context/LoaderContext.jsx'
 import {WritePost} from '../components/WritePost/WritePost'
 import { Post } from '../components/Post/Post'
 import { useEffect, useState, useContext } from "react"
-import { collection, getDocs, query, orderBy, arrayRemove } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from '../firebase';
+import { UserAuth } from '../context/AuthContext';
   
 export const Home = () => {
     const [notes, setNotes] = useState([])
+    const currentUser = UserAuth().user
     const loader = useContext(LoadingContext)
     
 
@@ -27,10 +29,6 @@ export const Home = () => {
       loader.setLoading(false)
     }
 
-    const updateNotes = async () => {
-      
-    }
-
     useEffect(() => {
       getNotes()
     }, [])
@@ -43,6 +41,7 @@ export const Home = () => {
               {notes.map(note => {
                 return <Post 
                     props={note}
+                    currentUser={currentUser}
                     key={note.id}
                   />
               })}

@@ -10,6 +10,7 @@ import { Header } from '/src/components/Header/Header'
 import { LoadingContext } from '/src/context/LoaderContext.jsx'
 import { useState } from 'react'
 import { Friends } from './pages/Friends/Friends'
+import { MyPosts } from './pages/MyPosts/MyPosts'
 function App() {
   const [isLoading, setLoading] = useState(false)
 
@@ -25,6 +26,7 @@ function App() {
             <Route path='/MyProfile' element={<MyProfile />}></Route>
             <Route path='/profile' element={<Profile />}></Route>
             <Route path='/friends' element={<Friends />}></Route>
+            <Route path='/MyPosts' element={<MyPosts />}></Route>
           </Routes>
           <Nav />
         </main>
