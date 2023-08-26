@@ -5,11 +5,14 @@ import { UserAuth } from "../../context/AuthContext"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import styles from './friendButton.module.css'
+import { useNavigate } from "react-router-dom"
 export const FriendButton = ({user, style}) => {
     const loader = useContext(LoadingContext)
     const [currentUserData, setCurrentUserData] = useState({})
     const currentUser = UserAuth().user
     console.log('current User data', currentUserData);
+
+    const navigate = useNavigate()
 
     const isFriend = () => {
         return currentUserData.friends.find(friend => friend.id === user.id)
@@ -68,8 +71,8 @@ export const FriendButton = ({user, style}) => {
                 {isFriend() ? 'Delete from friends' : 'Add to friends'}
             </button>
             :
-            <button onClick={() => {alert('user is not defiend yet')}} className={styles.addFriend}>
-                {'Add to friends'}
+            <button style={style} onClick={() => {navigate('/auth')}} className={styles.addFriend}>
+                Add to friends
             </button>
     )
 }

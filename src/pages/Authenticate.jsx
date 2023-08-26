@@ -8,12 +8,11 @@ export const Authenticate = () => {
     const googleButton = <GoogleButton onClick={async() => {
         const user = await userAuth.googleSignIn()
 
-        if(user) navigate('/profile')
+        console.log(user);
+
+        if(user) navigate('/MyProfile')
     }}/>
 
-    
-
-    const profile = <div></div>
     return (
         <>
             <div>

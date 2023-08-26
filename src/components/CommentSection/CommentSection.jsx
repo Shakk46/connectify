@@ -3,13 +3,14 @@ import { useEffect, useState, useContext } from 'react'
 import { db } from '../../firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { LoadingContext } from '../../context/LoaderContext' 
-import { Link } from 'react-router-dom'
-import { UserAuth } from '../../context/AuthContext'
+import { Link, useNavigate } from 'react-router-dom'
 
-export const CommentSection = ({id}) => {
+export const CommentSection = ({id, currentUser}) => {
     const [commentData, setCommentData] = useState([])
     const [inputValue, setInputValue] = useState('')
-    const currentUser = UserAuth().user
+
+    const navigate = useNavigate()
+
     const loader = useContext(LoadingContext)
 
     const getComments = async () => {
@@ -31,22 +32,27 @@ export const CommentSection = ({id}) => {
     }, [])
 
     const handleSubmit = async() => {
-        loader.setLoading(true)
-        setInputValue('')
-        
-        const noteRef = doc(db, 'notes', id)
-        const comment = {
-            photoURL:currentUser.photoURL,
-            id:currentUser.uid,
-            content:inputValue
+        if(currentUser) {
+            loader.setLoading(true)
+            setInputValue('')
+            
+            const noteRef = doc(db, 'notes', id)
+            const comment = {
+                photoURL:currentUser.photoURL,
+                id:currentUser.uid,
+                content:inputValue
+            }
+
+            await updateDoc(noteRef, {
+                comments:[...commentData, comment]
+            });
+
+            getComments()
+            loader.setLoading(false)
+        }else {
+            navigate('/auth')
         }
-
-        await updateDoc(noteRef, {
-            comments:[...commentData, comment]
-        });
-
-        getComments()
-        loader.setLoading(false)
+        
     }
 
     return (

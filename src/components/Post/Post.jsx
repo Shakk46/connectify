@@ -62,7 +62,7 @@ export function Post({props, currentUser}) {
     }
     return(
         <div className={`${styles.container}`}>
-            <Link to={user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`} state={user.id} className={styles.profile}>
+            <Link to={currentUser && user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`} state={user.id} className={styles.profile}>
                 <img src={user.photoURL} />
                 <p>{user.name}</p>
             </Link>
@@ -79,7 +79,7 @@ export function Post({props, currentUser}) {
                     <p>{note.comments.length}</p>
                 </div>
             </div>
-            {commentOpened && <CommentSection id={note.id}/>}
+            {commentOpened && <CommentSection id={note.id} currentUser={currentUser}/>}
         </div>
     )
 }
