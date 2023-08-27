@@ -49,8 +49,8 @@ export const MyPosts = () => {
         <div className={styles.container}>
             {
                 myNotes.length ?
-                    myNotes.map((post) => {
-                        return <Post props={...post} currentUser={currentUser} key={post.id} />
+                    myNotes.map(post => {
+                        return <Post props={{...post}} currentUser={currentUser} key={post.id} />
                     }): null
             }
         </div>
