@@ -1,17 +1,26 @@
 import { useState, useEffect } from 'react'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { LoadingContext } from '../../context/LoaderContext';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { db } from '../../firebase'
 import styles from './profile.module.css'
 import { useContext } from 'react';
 import { FriendButton } from '../../components/FriendButton/FriendButton';
+import { UserAuth } from '../../context/AuthContext';
 
 export const Profile = () => {
     const location = useLocation();
     const id = location.state
+    const userAuth = UserAuth()
+    const currentUser = userAuth.user
+
+    const [editing, setEditing] = useState(false)
+
+    const [isMyProfile, setMyProfile] = useState(false)
+
 
     const loader = useContext(LoadingContext)
+    const navigate = useNavigate()
     
 
     const [user, setUser] = useState({name:'Name of the user will appear here', bio:'Bio of the user will appear here'})
@@ -25,25 +34,97 @@ export const Profile = () => {
             const userSnap = await getDoc(userRef)
             const userData = userSnap.data()
 
+            
+
             setUser(userData)
             loader.setLoading(false)
         }
         getUser()
     }, [])
 
+    // isMyProfile
+    useEffect(() => {
+        console.log('effect worked')
+        setMyProfile(id === currentUser.uid)
+    }, [currentUser])
+
+    const handleLogOut = () => {
+        userAuth.logOut()
+
+        navigate('/auth')
+    }
+
+    const updateUserInfo = (info) => {
+        console.log(info)
+        const userRef = doc(db, 'users', currentUser.uid)
+        updateDoc(userRef, info).then(() => {
+            console.log('changed info')
+        })
+
+        setUser({...user, ...info})
+    }
+
     return (
+        editing ? 
+        <form className={styles.container}>
+            <label htmlFor="photoURL">Photo url</label> 
+            <input
+            name='photoURL'
+            defaultValue={user.photoURL}
+            className={`${styles.editing}`}
+            value={user.photoURL}
+            onInput={(event) => {setUser({...user, photoURL:event.target.value})}}/>
+
+            <label htmlFor="name">Name</label>
+            <input 
+            name='name'
+            className={`${styles.name} 
+            ${styles.editing}`} 
+            defaultValue={user.name} 
+            onInput={(event) => {setUser({...user, name:event.target.value})}}/>
+
+            <hr className={styles.hr}/> 
+
+            <div className={styles.bio}>
+                <h3>Bio</h3>
+                <textarea 
+                defaultValue={user.bio} 
+                className={`${styles.editing}`}
+                onInput={(event) => {setUser({...user, bio:event.target.value})}}/>
+            </div>
+
+            <input
+                type='submit' 
+                value={'Done'} 
+                className={`${styles.submitButton} ${styles.button}`}
+                onClick={async event => {
+                    event.preventDefault()
+                    updateUserInfo(user)
+                    setEditing(false)
+                    }} />
+                
+            
+        </form>
+        :
         <div className={styles.container}>
-            <img src={user.photoURL} alt="user profile picture" className={styles.image} />
+            <img src={user.photoURL} alt="" className={styles.image} />
             <h2 className={styles.name}>{user.name}</h2>
 
             <hr className={styles.hr}/> 
 
             <div className={styles.bio}>
                 <h3>Bio</h3>
-                {user.bio ? <p>{user.bio}</p> : <p>User didn't write anything here yet</p>}
+                <p>{user.bio}</p>
             </div>
 
-            <FriendButton user={{...user, id:id}}/>
+            {isMyProfile ? 
+                <div className={styles.actionButtons}>
+                    <button onClick={handleLogOut} className={`${styles.signOut} ${styles.button}`}>Sign Out</button>
+                    <button onClick={() => {setEditing(!editing)}} className={`${styles.editButton} ${styles.button}`}>Edit</button>
+                </div>
+            :
+            <FriendButton user={{...user, id:id}}/>}
         </div>
+        
     )
 }

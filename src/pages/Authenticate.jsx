@@ -8,9 +8,9 @@ export const Authenticate = () => {
     const googleButton = <GoogleButton onClick={async() => {
         const user = await userAuth.googleSignIn()
 
-        console.log(user);
+        console.log(user.user);
 
-        if(user) navigate('/MyProfile')
+        user && navigate(`/profile?id=${user.user.uid}`, {state:user.user.uid})
     }}/>
 
     return (

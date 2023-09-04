@@ -10,7 +10,6 @@ export const FriendButton = ({user, style}) => {
     const loader = useContext(LoadingContext)
     const [currentUserData, setCurrentUserData] = useState({})
     const currentUser = UserAuth().user
-    console.log('current User data', currentUserData);
 
     const navigate = useNavigate()
 
@@ -21,7 +20,7 @@ export const FriendButton = ({user, style}) => {
     const updateCurrentUserData = async() => {
         const result = await getCurrentUserData(currentUser)
         setCurrentUserData(result)
-    }   
+    } 
 
     useEffect(() => {
         updateCurrentUserData()
@@ -49,13 +48,9 @@ export const FriendButton = ({user, style}) => {
 
         const userRef = doc(db, "users", currentUser.uid)
         const friendsList = currentUserData.friends
-        const delFriend = friendsList.map((friend) => {
-            if(friend.id == user.id) {
-                return friendsList.indexOf(friend)
-            }
-        })
+        const deletingFriend = friendsList.indexOf(friendsList.find(friend => {return friend.id === user.id}))
         updateDoc(userRef, {
-            friends: [...friendsList.slice(0, delFriend), ...friendsList.slice(delFriend + 1, friendsList.length)]
+            friends: [...friendsList.slice(0, deletingFriend), ...friendsList.slice(deletingFriend + 1, friendsList.length)]
         }).then(() => {
             updateCurrentUserData()
             console.log('removed from friends')

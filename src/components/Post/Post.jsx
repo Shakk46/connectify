@@ -27,11 +27,14 @@ export function Post({props, currentUser}) {
 
     const [commentOpened, setCommentStatus] = useState(false)
 
-    
+    // currentUser && user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`
+    // 
 
     useEffect(() => {
         isLiked = checkLiked()
     }, [likes])
+
+    
 
     const handleLiked = async () => {
         if(currentUser) {
@@ -62,7 +65,7 @@ export function Post({props, currentUser}) {
     }
     return(
         <div className={`${styles.container}`}>
-            <Link to={currentUser && user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`} state={user.id} className={styles.profile}>
+            <Link to={`/profile?id=${user.id}`} state={user.id} className={styles.profile}>
                 <img src={user.photoURL} />
                 <p>{user.name}</p>
             </Link>

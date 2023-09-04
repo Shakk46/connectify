@@ -6,6 +6,9 @@
     background-color: white;
     gap: 10px;
 }
+.name {
+    font-size: 1.5em;
+}
 .image {
     width: 200px;
     height: 200px;
@@ -21,9 +24,37 @@
 .bio > h3 {
     text-align: left;
 }
-.bio > p {
+.bio > textarea, .bio > p{
+    width: 100%;
     font-weight: normal;
+    font-size: 16px;
     background-color: rgba(236, 236, 236, 1);
     border-radius: 5px;
     padding: 15px;
+}
+.button {
+    width: 120px;
+    height: 40px;
+    color: white;
+    border-radius: 10px;
+}
+.actionButtons {
+    display: flex;
+    gap: 10px;
+}
+.signOut {
+    background-color: red;
+}
+.editButton {
+    background-color: grey;
+}
+.submitButton {
+    background-color: blue;
+    cursor: pointer;
+}
+.editing {
+    border: 2px solid blue;
+    border-radius: 8px;
+    padding: 5px;
+    width: 100%;
 }

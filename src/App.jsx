@@ -3,7 +3,6 @@ import { Home } from './pages/Home'
 import { Loader } from '/src/components/Loader/Loader.jsx'
 import { AuthContextProvider } from './context/AuthContext'
 import { Authenticate } from './pages/Authenticate'
-import { MyProfile } from './pages/MyProfile/MyProfile' 
 import { Profile } from './pages/Profile/Profile'
 import { Nav } from './components/Nav/Nav'
 import { Header } from '/src/components/Header/Header'
@@ -23,7 +22,6 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />}></Route>
             <Route path='/auth' element={<Authenticate/>}></Route>
-            <Route path='/MyProfile' element={<MyProfile />}></Route>
             <Route path='/profile' element={<Profile />}></Route>
             <Route path='/friends' element={<Friends />}></Route>
             <Route path='/MyPosts' element={<MyPosts />}></Route>
