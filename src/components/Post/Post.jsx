@@ -1,6 +1,5 @@
-import { useReducer, useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { LoadingContext } from '../../context/LoaderContext';
-import { UserAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
@@ -26,9 +25,6 @@ export function Post({props, currentUser}) {
     let isLiked = checkLiked()
 
     const [commentOpened, setCommentStatus] = useState(false)
-
-    // currentUser && user.id === currentUser.uid ? '/MyProfile' : `/profile?id=${user.id}`
-    // 
 
     useEffect(() => {
         isLiked = checkLiked()
@@ -69,14 +65,17 @@ export function Post({props, currentUser}) {
                 <img src={user.photoURL} />
                 <p>{user.name}</p>
             </Link>
+
             <div className={styles.content}>
                 {note.content}
             </div>
+
             <div className={styles.actions}>
                 <div className={styles.like}>
                     <button onClick={handleLiked}><span className="material-icons">{isLiked ? 'thumb_up_alt' :  'thumb_up_off_alt'}</span></button>
                     <p>{likes.length}</p>
                 </div>
+                
                 <div className={styles.comment}>
                     <button onClick={() => setCommentStatus(!commentOpened)}><span className="material-icons">{commentOpened ?'chat' :  'chat_bubble_outline'}</span></button>
                     <p>{note.comments.length}</p>

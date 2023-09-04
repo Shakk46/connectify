@@ -64,47 +64,14 @@ export const Profile = () => {
         setUser({...user, ...info})
     }
 
+    useEffect(() => {
+
+    }, [])
+
+
     return (
         editing ? 
-        <form className={styles.container}>
-            <label htmlFor="photoURL">Photo url</label> 
-            <input
-            name='photoURL'
-            defaultValue={user.photoURL}
-            className={`${styles.editing}`}
-            value={user.photoURL}
-            onInput={(event) => {setUser({...user, photoURL:event.target.value})}}/>
-
-            <label htmlFor="name">Name</label>
-            <input 
-            name='name'
-            className={`${styles.name} 
-            ${styles.editing}`} 
-            defaultValue={user.name} 
-            onInput={(event) => {setUser({...user, name:event.target.value})}}/>
-
-            <hr className={styles.hr}/> 
-
-            <div className={styles.bio}>
-                <h3>Bio</h3>
-                <textarea 
-                defaultValue={user.bio} 
-                className={`${styles.editing}`}
-                onInput={(event) => {setUser({...user, bio:event.target.value})}}/>
-            </div>
-
-            <input
-                type='submit' 
-                value={'Done'} 
-                className={`${styles.submitButton} ${styles.button}`}
-                onClick={async event => {
-                    event.preventDefault()
-                    updateUserInfo(user)
-                    setEditing(false)
-                    }} />
-                
-            
-        </form>
+        <EditingUser user={user} updateUserInfo={updateUserInfo} setEditing={setEditing}/>
         :
         <div className={styles.container}>
             <img src={user.photoURL} alt="" className={styles.image} />
@@ -127,4 +94,52 @@ export const Profile = () => {
         </div>
         
     )
+}
+
+const EditingUser = ({user, updateUserInfo, setEditing}) => {
+    const [newUser, setNewUser] = useState({...user})
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+
+        if(JSON.stringify(newUser) !== JSON.stringify(user)) {
+            console.log('worked', newUser, {...user})
+            updateUserInfo(newUser)
+        }
+        setEditing(false)
+    }
+    return (
+    <form className={styles.container}>
+            <label htmlFor="photoURL">Photo url</label> 
+            <input
+            name='photoURL'
+            defaultValue={user.photoURL}
+            className={`${styles.editing}`}
+            onInput={(event) => {setNewUser({...user, photoURL:event.target.value})}}/>
+
+            <label htmlFor="name">Name</label>
+            <input 
+            name='name'
+            className={`${styles.name} 
+            ${styles.editing}`}
+            defaultValue={user.name} 
+            onInput={(event) => {setNewUser({...user, name:event.target.value})}}/>
+
+            <hr className={styles.hr}/> 
+
+            <div className={styles.bio}>
+                <h3>Bio</h3>
+                <textarea 
+                defaultValue={user.bio} 
+                className={`${styles.editing}`}
+                onInput={(event) => {setNewUser({...user, bio:event.target.value})}}/>
+            </div>
+
+            <input
+                type='submit' 
+                value={'Done'} 
+                className={`${styles.submitButton} ${styles.button}`}
+                onClick={handleSubmit} />
+    </form>
+)
 }
