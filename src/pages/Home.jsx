@@ -42,6 +42,7 @@ export const Home = () => {
                 return <Post 
                     props={note}
                     currentUser={currentUser}
+                    userId
                     key={note.id}
                   />
               })}

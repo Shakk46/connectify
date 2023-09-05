@@ -31,10 +31,14 @@
 .writeComment {
     width: 100%;
     padding: 5px;
-
-}
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}   
 .writeComment > input {
-    background-color:rgba(0, 0, 0, 0.3);
+    display: block;
+    border: 1px solid black;
+    border-radius:8px;
     padding: 5px;
     width: 70%;
     height: 30px;
@@ -44,7 +48,9 @@ h4 {
     font-weight: normal;
 }
 .submitComment {
-    width: 50px;
-    height: 40px;
-    
+    width: 100px;
+    height: 35px;
+    background-color: blue;
+    color: white;
+    border-radius: 8px;
 }

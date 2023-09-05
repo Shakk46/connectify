@@ -77,7 +77,7 @@ export const CommentSection = ({id, currentUser}) => {
         }
 
             <div className={styles.writeComment}>
-                <input value={inputValue} type="text" onChange={(event) => {
+                <input value={inputValue} maxLength={120} onChange={(event) => {
                     setInputValue(event.target.value)
                 }}/>
                 <button className={styles.submitComment} onClick={handleSubmit}>Submit</button>
