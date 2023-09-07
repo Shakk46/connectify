@@ -1,13 +1,13 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { addDoc, collection } from "firebase/firestore";
 import { db } from '../../firebase';
 import styles from './writePost.module.css'
 import { UserAuth } from '../../context/AuthContext';
-import { LoadingContext } from '../../context/LoaderContext';
+import { Loading } from '../../context/LoaderContext';
 export function WritePost({updateNotes}) {
     const currentUser = UserAuth().user
 
-    const loader = useContext(LoadingContext)
+    const loader = Loading()
 
     const [inputValue, setValue] = useState('')
 

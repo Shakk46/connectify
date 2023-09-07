@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { LoadingContext } from '../../context/LoaderContext';
+import { Loading } from '../../context/LoaderContext';
 import { useNavigate, Link } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
@@ -9,7 +9,7 @@ export function Post({props, currentUser}) {
     const note = props
     const [userData, setUserData] = useState({photoURL:'', name:'Loading...'})
 
-    const loader = useContext(LoadingContext)
+    const loader = Loading()
 
     const [commentOpened, setCommentStatus] = useState(false)
     

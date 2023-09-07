@@ -1,22 +1,20 @@
 import { Route, Routes } from 'react-router-dom'
 import { Home } from './pages/Home'
-import { Loader } from '/src/components/Loader/Loader.jsx'
 import { AuthContextProvider } from './context/AuthContext'
 import { Authenticate } from './pages/Authenticate'
 import { Profile } from './pages/Profile/Profile'
 import { Nav } from './components/Nav/Nav'
 import { Header } from '/src/components/Header/Header'
-import { LoadingContext } from '/src/context/LoaderContext.jsx'
-import { useState } from 'react'
 import { Friends } from './pages/Friends/Friends'
 import { MyPosts } from './pages/MyPosts/MyPosts'
+import { LoadingContextProvider } from './context/LoaderContext'
 function App() {
-  const [isLoading, setLoading] = useState(false)
+  
 
   return (
     <AuthContextProvider>
 
-      <LoadingContext.Provider value={{isLoading, setLoading}}>
+      <LoadingContextProvider>
         <Header />
         <main>
           <Routes>
@@ -28,8 +26,7 @@ function App() {
           </Routes>
           <Nav />
         </main>
-        {isLoading && <Loader />}
-      </LoadingContext.Provider>
+      </LoadingContextProvider>
       
     </AuthContextProvider>
     

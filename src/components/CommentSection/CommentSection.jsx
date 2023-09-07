@@ -2,7 +2,7 @@ import styles from './comment.module.css'
 import { useEffect, useState, useContext } from 'react'
 import { db } from '../../firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
-import { LoadingContext } from '../../context/LoaderContext' 
+import { Loading } from '../../context/LoaderContext' 
 import { Link, useNavigate } from 'react-router-dom'
 
 export const CommentSection = ({id, currentUser}) => {
@@ -11,7 +11,7 @@ export const CommentSection = ({id, currentUser}) => {
 
     const navigate = useNavigate()
 
-    const loader = useContext(LoadingContext)
+    const loader = Loading()
 
     const getComments = async () => {
         loader.setLoading(true)

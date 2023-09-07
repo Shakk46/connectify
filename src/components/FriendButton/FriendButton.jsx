@@ -1,13 +1,13 @@
 import { getCurrentUserData } from "../../helpers/getFunctions"
-import { useState, useEffect, useContext } from "react"
-import { LoadingContext } from "../../context/LoaderContext"
+import { useState, useEffect } from "react"
+import { Loading } from "../../context/LoaderContext"
 import { UserAuth } from "../../context/AuthContext"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import styles from './friendButton.module.css'
 import { useNavigate } from "react-router-dom"
 export const FriendButton = ({user, style}) => {
-    const loader = useContext(LoadingContext)
+    const loader = Loading()
     const [currentUserData, setCurrentUserData] = useState({})
     const currentUser = UserAuth().user
 

@@ -40,7 +40,6 @@ main {
     display: flex;
     justify-content: space-around;
     gap: 10px;
-    padding: 10px;
 }
 main > div {
     width: 60%;
@@ -54,9 +53,7 @@ main > div {
     flex-direction: column;
     gap: 40px;
 }
-main > nav {
-    width: 20%;
-}
+
 .heading {
     width: 30%;
     height: 50px;
@@ -64,4 +61,22 @@ main > nav {
     display: flex;
     align-items: center;
     padding: 20px;
+}
+
+
+@media (min-width:1201px) {
+    main > nav {
+        width: 20%;
+    }
+}
+
+@media (max-width:1200px) {
+    nav {
+        width: 30%;
+    }
+}
+@media (max-width:1024) {
+    nav {
+        
+    }
 }
