@@ -81,7 +81,7 @@ export const Profile = () => {
 
             <div className={styles.bio}>
                 <h3>Bio</h3>
-                <p>{user.bio}</p>
+                <p>{user.bio ? user.bio : 'Nothing in here'}</p>
             </div>
 
             {isMyProfile ? 
@@ -108,7 +108,7 @@ const EditingUser = ({user, updateUserInfo, setEditing}) => {
         }
         setEditing(false)
     }
-    return (
+return (
     <form className={styles.container}>
             <label htmlFor="photoURL">Photo url</label> 
             <input

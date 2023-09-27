@@ -8,12 +8,13 @@ import { Header } from '/src/components/Header/Header'
 import { Friends } from './pages/Friends/Friends'
 import { MyPosts } from './pages/MyPosts/MyPosts'
 import { LoadingContextProvider } from './context/LoaderContext'
+import { ScreenContext } from './context/ScreenSizeContext'
 function App() {
   
+  const screenSize = ScreenContext()
 
   return (
     <AuthContextProvider>
-
       <LoadingContextProvider>
         <Header />
         <main>
@@ -24,10 +25,12 @@ function App() {
             <Route path='/friends' element={<Friends />}></Route>
             <Route path='/MyPosts' element={<MyPosts />}></Route>
           </Routes>
-          <Nav />
+          {
+            screenSize.width > 968 && <Nav />
+          }
+          
         </main>
       </LoadingContextProvider>
-      
     </AuthContextProvider>
     
   )

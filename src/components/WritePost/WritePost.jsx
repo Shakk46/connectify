@@ -4,8 +4,11 @@ import { db } from '../../firebase';
 import styles from './writePost.module.css'
 import { UserAuth } from '../../context/AuthContext';
 import { Loading } from '../../context/LoaderContext';
+import { useNavigate } from 'react-router-dom';
 export function WritePost({updateNotes}) {
     const currentUser = UserAuth().user
+
+    const navigate = useNavigate()
 
     const loader = Loading()
 
@@ -18,24 +21,26 @@ export function WritePost({updateNotes}) {
     }
 
     const handleSubmit = async(event) => {
-        loader.setLoading(true)
-        const formData = {
-            content: inputValue,
-            date:Date.now(),
-            likes: [],
-            comments: [],
-            userId:currentUser.uid
-        }
-
-        setValue('')
         event.preventDefault()
 
-        await addDoc(collection(db, "notes"), formData);
+        if(currentUser) {
+            loader.setLoading(true)
+            const formData = {
+                content: inputValue,
+                date:Date.now(),
+                likes: [],
+                comments: [],
+                userId:currentUser.uid
+            }
+            setValue('')
+            await addDoc(collection(db, "notes"), formData);
+            updateNotes()
+            loader.setLoading(false)
+            navigate('/auth')
+        }else {
+            navigate('/auth')
+        }
 
-        
-        updateNotes()
-        loader.setLoading(false)
-        
     }
 
     return(

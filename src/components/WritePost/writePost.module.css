@@ -27,5 +27,18 @@
 .submit {
     width: 100px;
     height: 40px;
-    background-color: grey;
+    background-color: lightblue;
+    border-radius: 8px;
+    color: white;
+}
+
+@media (max-width:1400px) {
+    .input {
+        font-size: 16px;
+        width: 100%;
+    }    
+}
+@media (max-width:1200px) {
+    
+    
 }

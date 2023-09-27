@@ -39,3 +39,9 @@
 .actions > div > p {
     font-weight: normal;
 }
+
+@media (max-width:1400px) {
+    .content {
+        font-size: 18px;
+    }
+}
