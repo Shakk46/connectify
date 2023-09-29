@@ -26,7 +26,7 @@ function App() {
             <Route path='/MyPosts' element={<MyPosts />}></Route>
           </Routes>
           {
-            screenSize.width > 968 && <Nav />
+            screenSize.width > 986 && <Nav />
           }
           
         </main>

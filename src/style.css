@@ -82,7 +82,7 @@ main > div {
         width: 30%;
     }
 }
-@media (max-width:968px) {
+@media (max-width:986px) {
     main > div {
         width: 100%;
     }

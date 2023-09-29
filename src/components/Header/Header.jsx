@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { UserAuth } from '../../context/AuthContext'
 import styles from './header.module.css'
 import { ScreenContext } from '../../context/ScreenSizeContext'
+import { useRef, useState } from 'react'
 
 export function Header() {
     const userAuth = UserAuth()
@@ -33,10 +34,34 @@ export function Header() {
 
 
 const Burger = () => {
-    // Доделать клик и меню
+    const [isOpen, setOpen] = useState(false)
+    const userAuth = UserAuth()
+    const currentUser = userAuth.user
+
+    const handleClick = () => {
+        setOpen(!isOpen)
+    }
+
     return (
-        <div className={styles.burger}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png" alt="burger" />
+        isOpen ?
+        <div className={styles.menu}>
+            <img onClick={handleClick} src="https://www.veryicon.com/download/png/miscellaneous/kqt/close-116?s=512" alt="burger" className={styles.burgerImg}/>
+            
+            <ul>
+                <li>
+                    <Link to={'/'} onClick={handleClick}>Home</Link>
+                </li>
+                <li>
+                    <Link to={currentUser ? '/friends' : '/auth'} onClick={handleClick}>Friends</Link>
+                </li>
+                <li>
+                    <Link to={currentUser ? '/MyPosts' : '/auth'} onClick={handleClick}>My Posts</Link>
+                </li>
+            </ul>
+        </div>
+        :
+        <div className={styles.burger} >
+            <img onClick={handleClick} src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png" alt="burger" className={styles.burgerImg}/>
         </div>
     )
 }
