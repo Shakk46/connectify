@@ -57,7 +57,7 @@ export const CommentSection = ({id, currentUser}) => {
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.heading}>Comments</h2>
+            {/* <h2 className={styles.heading}>Comments</h2> */}
             { commentData.length ?
             commentData.map((comment) => {
                 return (

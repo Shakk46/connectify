@@ -48,15 +48,15 @@ const Burger = () => {
             <img onClick={handleClick} src="https://www.veryicon.com/download/png/miscellaneous/kqt/close-116?s=512" alt="burger" className={styles.burgerImg}/>
             
             <ul>
-                <li>
-                    <Link to={'/'} onClick={handleClick}>Home</Link>
-                </li>
-                <li>
-                    <Link to={currentUser ? '/friends' : '/auth'} onClick={handleClick}>Friends</Link>
-                </li>
-                <li>
-                    <Link to={currentUser ? '/MyPosts' : '/auth'} onClick={handleClick}>My Posts</Link>
-                </li>
+                
+                <Link to={'/'} onClick={handleClick}>Home</Link>
+            
+            
+                <Link to={currentUser ? '/friends' : '/auth'} onClick={handleClick}>Friends</Link>
+            
+            
+                <Link to={currentUser ? '/MyPosts' : '/auth'} onClick={handleClick}>My Posts</Link>
+                
             </ul>
         </div>
         :

@@ -36,7 +36,6 @@ export function WritePost({updateNotes}) {
             await addDoc(collection(db, "notes"), formData);
             updateNotes()
             loader.setLoading(false)
-            navigate('/auth')
         }else {
             navigate('/auth')
         }

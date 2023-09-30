@@ -1,8 +1,5 @@
 .container {
     display: flex;
-    position:sticky;
-    top: 0;
-    left: 0;
     height: 80px;
     background-color: white;
     padding: 5px 10px;
@@ -72,7 +69,7 @@
     flex-direction: column;
     gap: 15px;
 }
-.menu > ul > li {
+.menu > ul > a {
     width: 100%;
     height: 40px;
     border-radius: 10px;
@@ -109,5 +106,10 @@
     }
     .left > h2 {
         font-size: 18px;
+    }
+    .container {
+        position:sticky;
+        top: 0;
+        left: 0;
     }
 }
