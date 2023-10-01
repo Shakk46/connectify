@@ -7,6 +7,7 @@ import styles from './profile.module.css'
 import { useContext } from 'react';
 import { FriendButton } from '../../components/FriendButton/FriendButton';
 import { UserAuth } from '../../context/AuthContext';
+import { updateData } from '/src/helpers/updateData';
 
 export const Profile = () => {
     const location = useLocation();
@@ -55,11 +56,7 @@ export const Profile = () => {
     }
 
     const updateUserInfo = (info) => {
-        console.log(info)
-        const userRef = doc(db, 'users', currentUser.uid)
-        updateDoc(userRef, info).then(() => {
-            console.log('changed info')
-        })
+        updateData(info, 'users', currentUser.uid)
 
         setUser({...user, ...info})
     }

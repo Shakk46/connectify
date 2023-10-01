@@ -5,13 +5,19 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
 import styles from './post.module.css'
 import { CommentSection } from '../CommentSection/CommentSection';
+import { SubmitButton } from '../SubmitButton';
+import { updateData } from '../../helpers/updateData';
+import { adjustHeight } from '../../helpers/adjustHeight';
 export function Post({props, currentUser}) {
-    const note = props
+    const [note, setNote] = useState(props)
     const [userData, setUserData] = useState({photoURL:'', name:'Loading...'})
 
     const loader = Loading()
 
     const [commentOpened, setCommentStatus] = useState(false)
+    
+    const [editing, setEditing] = useState(false)
+    const [inputValue, setValue] = useState(note.content)
     
     const navigate = useNavigate()
 
@@ -62,17 +68,54 @@ export function Post({props, currentUser}) {
         
         loader.setLoading(false)
     }
+    const handleEditing = () => {
+        setEditing(!editing)
+    }
+    const handleEdited = async () => {
+        updateData({content:inputValue}, 'notes', note.id)
+
+        setNote({...note, content:inputValue})
+
+        handleEditing()
+    }
 
     return(
         <div className={`${styles.container}`}>
-            <Link to={`/profile?id=${note.userId}`} state={note.userId} className={styles.profile}>
-                <img src={userData.photoURL} />
-                <p>{userData.name}</p>
-            </Link>
+            <div className={styles.upper}>
+                <Link to={`/profile?id=${note.userId}`} state={note.userId} className={styles.profile}>
+                    <img src={userData.photoURL} />
+                    <p>{userData.name}</p>
+                    
+                </Link>
+
+                {
+                currentUser && currentUser.uid == note.userId && 
+                <div className={styles.edit} onClick={handleEditing}>
+                    <img src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-editor-pen-pencil-write-icon--4.png" alt="" />
+                </div>
+                }
+            </div>
 
             <div className={styles.content}>
-                {note.content}
+                {
+                    editing ? 
+                    <div className={styles.editForm}>
+                        <textarea 
+                        type="text" 
+                        value={inputValue} 
+                        onChange={(event) => {setValue(event.target.value)}} 
+                        onInput={adjustHeight}
+                        maxLength={120}
+                        minLength={1}
+                        />
+                        <SubmitButton onClick={handleEdited}/>
+                    </div>
+                    :
+                    <p>{note.content}</p>
+                }
             </div>
+
+            
 
             <div className={styles.actions}>
                 <div className={styles.like}>

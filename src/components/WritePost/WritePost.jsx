@@ -5,6 +5,8 @@ import styles from './writePost.module.css'
 import { UserAuth } from '../../context/AuthContext';
 import { Loading } from '../../context/LoaderContext';
 import { useNavigate } from 'react-router-dom';
+import { SubmitButton } from '../SubmitButton';
+import { adjustHeight } from '../../helpers/adjustHeight';
 export function WritePost({updateNotes}) {
     const currentUser = UserAuth().user
 
@@ -14,11 +16,7 @@ export function WritePost({updateNotes}) {
 
     const [inputValue, setValue] = useState('')
 
-    function adjustHeight(e) {
-        let block = e.target
-        block.style.height = "auto";
-        block.style.height = block.scrollHeight + "px";
-    }
+    
 
     const handleSubmit = async(event) => {
         event.preventDefault()
@@ -46,7 +44,7 @@ export function WritePost({updateNotes}) {
         <div className={styles.container}>
             <form action="#" className={styles.form} onSubmit={handleSubmit}>
               <textarea value={inputValue} onChange={(event) => {setValue(event.target.value)}} type="text" className={styles.input} placeholder='Write what is up. (max. characters: 120)' onInput={adjustHeight} maxLength='120'/>
-              <button type="submit" className={styles.submit}>Submit</button>
+              <SubmitButton />
             </form>
         </div>
     )
