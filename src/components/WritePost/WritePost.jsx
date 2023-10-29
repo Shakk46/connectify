@@ -3,16 +3,17 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from '../../firebase';
 import styles from './writePost.module.css'
 import { UserAuth } from '../../context/AuthContext';
-import { Loading } from '../../context/LoaderContext';
+import { LoadingContext } from '../../context/LoaderContext';
 import { useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../SubmitButton';
 import { adjustHeight } from '../../helpers/adjustHeight';
+import { useContext } from 'react';
 export function WritePost({updateNotes}) {
     const currentUser = UserAuth().user
 
     const navigate = useNavigate()
 
-    const loader = Loading()
+    const loader = useContext(LoadingContext)
 
     const [inputValue, setValue] = useState('')
 
@@ -43,7 +44,14 @@ export function WritePost({updateNotes}) {
     return(
         <div className={styles.container}>
             <form action="#" className={styles.form} onSubmit={handleSubmit}>
-              <textarea value={inputValue} onChange={(event) => {setValue(event.target.value)}} type="text" className={styles.input} placeholder='Write what is up. (max. characters: 120)' onInput={adjustHeight} maxLength='120'/>
+              <textarea 
+                value={inputValue}
+                onChange={(event) => {setValue(event.target.value)}}
+                className={styles.input}
+                placeholder='Write what is up. (max. characters: 120)'
+                onInput={adjustHeight}
+                maxLength='120'
+              />
               <SubmitButton />
             </form>
         </div>

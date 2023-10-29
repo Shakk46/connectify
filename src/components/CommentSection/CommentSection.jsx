@@ -2,34 +2,15 @@ import styles from './comment.module.css'
 import { useEffect, useState, useContext } from 'react'
 import { db } from '../../firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
-import { Loading } from '../../context/LoaderContext' 
+import { LoadingContext } from '../../context/LoaderContext' 
 import { Link, useNavigate } from 'react-router-dom'
+import { getUserData } from '../../helpers/getFunctions'
 
-export const CommentSection = ({id, currentUser}) => {
-    const [commentData, setCommentData] = useState([])
+export const CommentSection = ({comments, currentUser}) => {
     const [inputValue, setInputValue] = useState('')
 
+    const loader = useContext(LoadingContext)
     const navigate = useNavigate()
-
-    const loader = Loading()
-
-    const getComments = async () => {
-        loader.setLoading(true)
-        const noteRef = doc(db, 'notes', id)
-        const noteData = (await getDoc(noteRef)).data()
-
-
-        if(noteData.comments.length) {
-            setCommentData(noteData.comments)
-            loader.setLoading(false)
-        }else {
-            return loader.setLoading(false)
-        }
-    }
-    
-    useEffect(() => {
-        getComments()
-    }, [])
 
     const handleSubmit = async() => {
         if(currentUser) {
@@ -44,7 +25,7 @@ export const CommentSection = ({id, currentUser}) => {
             }
 
             await updateDoc(noteRef, {
-                comments:[...commentData, comment]
+                comments:[...comments, comment]
             });
 
             getComments()
@@ -58,18 +39,12 @@ export const CommentSection = ({id, currentUser}) => {
     return (
         <div className={styles.container}>
             {/* <h2 className={styles.heading}>Comments</h2> */}
-            { commentData.length ?
-            commentData.map((comment) => {
+            { comments.length ?
+            comments.map((comment) => {
                 return (
-                    <div className={styles.comment}>
-                        <Link to={'/profile?id=' + comment.id} state={comment.id}>
-                            <img src={comment.photoURL} alt="" className={styles.photo} />
-                        </Link>
-                        
-                        <p className={styles.content}>{comment.content}</p>
-                    </div>
+                    <Comment comment={comment} />
                 )
-            }) 
+            })
             
             : 
 
@@ -82,6 +57,26 @@ export const CommentSection = ({id, currentUser}) => {
                 }}/>
                 <button className={styles.submitComment} onClick={handleSubmit}>Submit</button>
             </div>
+        </div>
+    )
+}
+
+const Comment = ({comment}) => {
+    const [userData, setUserData] = useState()
+    const updateUserData = async() => {
+        setUserData(await getUserData(comment.id))
+    }
+
+    useEffect(() => {
+        updateUserData()
+    }, [])
+    return (
+        <div className={styles.comment}>
+            <Link to={'/profile?id=' + comment.id} state={comment.id}>
+                <img src={userData?.photoURL} alt="Ava" className={styles.photo} />
+            </Link>
+            
+            <p className={styles.content}>{comment.content}</p>
         </div>
     )
 }

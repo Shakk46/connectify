@@ -11,6 +11,7 @@ export const Home = () => {
     const currentUser = UserAuth().user
     const loader = useContext(LoadingContext)
 
+    
 
     const getNotes = async () => {
       loader.setLoading(true)

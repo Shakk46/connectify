@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { Loading } from '../../context/LoaderContext';
+import { LoadingContext } from '../../context/LoaderContext';
 import { useNavigate, Link } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
@@ -8,11 +8,18 @@ import { CommentSection } from '../CommentSection/CommentSection';
 import { SubmitButton } from '../SubmitButton';
 import { updateData } from '../../helpers/updateData';
 import { adjustHeight } from '../../helpers/adjustHeight';
+import { useQueryClient } from '@tanstack/react-query';
+import { getUserData } from '../../helpers/getFunctions';
+
+
 export function Post({props, currentUser}) {
     const [note, setNote] = useState(props)
     const [userData, setUserData] = useState({photoURL:'', name:'Loading...'})
 
-    const loader = Loading()
+    const isMyPost = currentUser && currentUser.uid == note.userId
+
+    const loader = useContext(LoadingContext)
+    
 
     const [commentOpened, setCommentStatus] = useState(false)
     
@@ -22,24 +29,15 @@ export function Post({props, currentUser}) {
     const navigate = useNavigate()
 
     const [likes, setLikes] = useState(note.likes)
-    const isLiked = () => {
-        if(currentUser) {
-            return likes.includes(currentUser.uid)
-        }else {
-            return false
-        }
-        
+    const isLiked = currentUser ? likes.includes(currentUser.uid) : false
+
+    const updateUserData = async() => {
+        setUserData(await getUserData(note.userId))
     }
 
     //get userData
     useEffect(() => {
-        const getUserData = async() => {
-            const userRef = doc(db, 'users', note.userId)
-            const data = (await getDoc(userRef)).data()
-
-            setUserData(data)
-        }
-        getUserData()
+        updateUserData()
     }, [])
 
 
@@ -48,8 +46,7 @@ export function Post({props, currentUser}) {
             loader.setLoading(true)
             const noteRef = doc(db, "notes", note.id);
             
-            
-            if(!isLiked()) {
+            if(!isLiked) {
                 setLikes([...likes, currentUser.uid])
                 await updateDoc(noteRef, {
                     likes:[...likes, currentUser.uid]
@@ -68,6 +65,7 @@ export function Post({props, currentUser}) {
         
         loader.setLoading(false)
     }
+
     const handleEditing = () => {
         setEditing(!editing)
     }
@@ -85,11 +83,10 @@ export function Post({props, currentUser}) {
                 <Link to={`/profile?id=${note.userId}`} state={note.userId} className={styles.profile}>
                     <img src={userData.photoURL} />
                     <p>{userData.name}</p>
-                    
                 </Link>
 
                 {
-                currentUser && currentUser.uid == note.userId && 
+                isMyPost && 
                 <div className={styles.edit} onClick={handleEditing}>
                     <img src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-editor-pen-pencil-write-icon--4.png" alt="" />
                 </div>
@@ -119,7 +116,9 @@ export function Post({props, currentUser}) {
 
             <div className={styles.actions}>
                 <div className={styles.like}>
-                    <button onClick={handleLiked}><span className="material-icons">{isLiked() ? 'thumb_up_alt' :  'thumb_up_off_alt'}</span></button>
+                    <button onClick={handleLiked}>
+                        <span className="material-icons">{isLiked ? 'thumb_up_alt' :  'thumb_up_off_alt'}</span>
+                    </button>
                     <p>{likes.length}</p>
                 </div>
                 
@@ -128,7 +127,7 @@ export function Post({props, currentUser}) {
                     <p>{note.comments.length}</p>
                 </div>
             </div>
-            {commentOpened && <CommentSection id={note.id} currentUser={currentUser}/>}
+            {commentOpened && <CommentSection comments={note.comments}/>}
         </div>
     )
 }

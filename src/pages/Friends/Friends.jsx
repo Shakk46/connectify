@@ -18,6 +18,7 @@ export const Friends = () => {
         setFriends(userFriends.friends)
         loader.setLoading(false)
     }
+    
     useEffect(() => {
         getFriends()
     }, [currentUser])
