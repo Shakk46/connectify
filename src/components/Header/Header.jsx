@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { UserAuth } from '../../context/AuthContext'
 import styles from './header.module.css'
 import { ScreenContext } from '../../context/ScreenSizeContext'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 export function Header() {
     const userAuth = UserAuth()
@@ -35,6 +35,7 @@ export function Header() {
 
 const Burger = () => {
     const [isOpen, setOpen] = useState(false)
+
     const userAuth = UserAuth()
     const currentUser = userAuth.user
 

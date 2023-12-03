@@ -1,44 +1,37 @@
-import { getUserData } from "../../helpers/getFunctions"
-import { useState, useEffect } from "react"
 import { LoadingContext } from "../../context/LoaderContext"
-import { UserAuth } from "../../context/AuthContext"
+import { AuthContext} from "../../context/AuthContext"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import styles from './friendButton.module.css'
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react"
-export const FriendButton = ({user, style}) => {
+import {useQuery, useQueryClient} from 'react-query'
+import { getUserData } from "../../helpers/getFunctions"
+
+export const FriendButton = ({userId, style}) => {
     const loader = useContext(LoadingContext)
-    const [currentUserData, setCurrentUserData] = useState({})
-    const currentUser = UserAuth().user
-
     const navigate = useNavigate()
+    const currentUser = useContext(AuthContext).user
+    const queryClient = useQueryClient()
 
-    const isFriend = () => {
-        return currentUserData.friends.find(friend => friend.id === user.id)
+    const getCurrentUserData = async() => {
+        console.log(await getUserData(currentUser.uid))
+        return await getUserData(currentUser.uid)
     }
 
-    const updateCurrentUserData = async() => {
-        const result = await getUserData(currentUser.uid)
-        setCurrentUserData(result)
-    } 
+    const {data:currentUserData} = useQuery({queryKey:['userData', currentUser.uid], queryFn:getCurrentUserData})
 
-    useEffect(() => {
-        updateCurrentUserData()
-    }, [currentUser])
+    const isFriend = currentUserData?.friends.includes(userId)
+
 
     const addFriend = () => {
         loader.setLoading(true)
 
         const userRef = doc(db, "users", currentUser.uid)
         updateDoc(userRef, {
-            friends: [...currentUserData.friends, {
-                photoURL: user.photoURL,
-                name: user.name,
-                id: user.id
-            }]
+            friends: [...currentUserData.friends, userId]
         }).then(() => {
-            updateCurrentUserData()
+            queryClient.invalidateQueries({queryKey:['userData', currentUser.uid]})
             console.log('Added to friends')
             loader.setLoading(false)
         })
@@ -49,11 +42,12 @@ export const FriendButton = ({user, style}) => {
 
         const userRef = doc(db, "users", currentUser.uid)
         const friendsList = currentUserData.friends
-        const deletingFriend = friendsList.indexOf(friendsList.find(friend => {return friend.id === user.id}))
+        const deletingFriend = friendsList.indexOf(friendsList.find(friend => {return friend.id === userId}))
+
         updateDoc(userRef, {
             friends: [...friendsList.slice(0, deletingFriend), ...friendsList.slice(deletingFriend + 1, friendsList.length)]
         }).then(() => {
-            updateCurrentUserData()
+            queryClient.invalidateQueries({queryKey:['userData', currentUser.uid]})
             console.log('removed from friends')
             loader.setLoading(false)
         })
@@ -62,9 +56,9 @@ export const FriendButton = ({user, style}) => {
     }
 
     return (
-        currentUserData && currentUserData.friends  ? 
-            <button style={style} onClick={isFriend() ? removeFriend : addFriend} className={styles.addFriend}>
-                {isFriend() ? 'Delete from friends' : 'Add to friends'}
+        currentUserData?.friends ? 
+            <button style={style} onClick={isFriend ? removeFriend : addFriend} className={styles.addFriend}>
+                {isFriend ? 'Delete from friends' : 'Add to friends'}
             </button>
             :
             <button style={style} onClick={() => {navigate('/auth')}} className={styles.addFriend}>

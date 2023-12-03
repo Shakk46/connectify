@@ -15,7 +15,7 @@ export function Nav() {
                     <Link to={currentUser ? '/friends' : '/auth'}>Friends</Link>
                 </li>
                 <li className={styles.listElement}>
-                    <Link to={currentUser ? '/MyPosts' : '/auth'}>My Posts</Link>
+                    <Link to={currentUser ? '/MyPosts' : '/auth'}>My Notes</Link>
                 </li>
             </ul>
         </nav>

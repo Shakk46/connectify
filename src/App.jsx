@@ -6,14 +6,23 @@ import { Profile } from './pages/Profile/Profile'
 import { Nav } from './components/Nav/Nav'
 import { Header } from '/src/components/Header/Header'
 import { Friends } from './pages/Friends/Friends'
-import { MyPosts } from './pages/MyPosts/MyPosts'
+import { MyNotes } from './pages/MyNotes/MyNotes'
 import { LoadingContextProvider } from './context/LoaderContext'
 import { ScreenContext } from './context/ScreenSizeContext'
+import {QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 function App() {
-  
-  const screenSize = ScreenContext()
 
-  return (
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 30000 }}
+})
+  
+const screenSize = ScreenContext()
+
+return (
+  <QueryClientProvider client={queryClient}>
     <AuthContextProvider>
       <LoadingContextProvider>
         <Header />
@@ -23,7 +32,7 @@ function App() {
             <Route path='/auth' element={<Authenticate/>}></Route>
             <Route path='/profile' element={<Profile />}></Route>
             <Route path='/friends' element={<Friends />}></Route>
-            <Route path='/MyPosts' element={<MyPosts />}></Route>
+            <Route path='/MyPosts' element={<MyNotes />}></Route>
           </Routes>
           {
             screenSize.width > 986 && <Nav />
@@ -32,8 +41,8 @@ function App() {
         </main>
       </LoadingContextProvider>
     </AuthContextProvider>
-    
-  )
+  </QueryClientProvider>
+)
 }
 
 export default App

@@ -12,6 +12,7 @@ import { updateData } from '/src/helpers/updateData';
 export const Profile = () => {
     const location = useLocation();
     const id = location.state
+    console.log(id)
     const userAuth = UserAuth()
     const currentUser = userAuth.user
 
@@ -87,7 +88,7 @@ export const Profile = () => {
                     <button onClick={() => {setEditing(!editing)}} className={`${styles.editButton} ${styles.button}`}>Edit</button>
                 </div>
             :
-            <FriendButton user={{...user, id:id}}/>}
+            <FriendButton userId={id}/>}
         </div>
         
     )

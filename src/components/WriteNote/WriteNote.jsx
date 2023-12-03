@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { addDoc, collection } from "firebase/firestore";
 import { db } from '../../firebase';
-import styles from './writePost.module.css'
+import styles from './writeNote.module.css'
 import { UserAuth } from '../../context/AuthContext';
 import { LoadingContext } from '../../context/LoaderContext';
 import { useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../SubmitButton';
 import { adjustHeight } from '../../helpers/adjustHeight';
 import { useContext } from 'react';
-export function WritePost({updateNotes}) {
+export function WriteNote({updateNotes}) {
     const currentUser = UserAuth().user
 
     const navigate = useNavigate()

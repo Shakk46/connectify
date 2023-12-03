@@ -1,22 +1,68 @@
 import { useState, useEffect, useContext } from 'react'
 import { LoadingContext } from '../../context/LoaderContext';
 import { useNavigate, Link } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from '/src/firebase';
-import styles from './post.module.css'
+import styles from './note.module.css'
 import { CommentSection } from '../CommentSection/CommentSection';
 import { SubmitButton } from '../SubmitButton';
 import { updateData } from '../../helpers/updateData';
 import { adjustHeight } from '../../helpers/adjustHeight';
-import { useQueryClient } from '@tanstack/react-query';
 import { getUserData } from '../../helpers/getFunctions';
+import { useQuery } from 'react-query';
 
 
-export function Post({props, currentUser}) {
+export function Note({props, currentUser}) {
+
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case 'openComment':
+                return (
+                    {...state, commentOpend:state.commentOpened}
+                )
+            case 'editing':
+
+                return (
+                    {...state, editing:!state.editing}
+                )
+            case 'changeInputValue':
+                return (
+                    {...state, inputValue:action.value}
+                )
+            case 'addLike':
+                updateDoc(noteRef, {
+                    likes:[...likes, currentUser.uid]
+                });
+                return (
+                    {...state, likes:[...likes, currentUser.uid]}
+                )
+            case 'removeLike':
+                updateDoc(noteRef, {
+                    likes:newLikes
+                });
+                return (
+                    {...state, likes:[...likes.slice(0, userId), ...likes.slice(userId + 1, likes.length)]}
+                )
+        
+            default:
+                break;
+        }
+    }
+
+    const noteState = {
+        commentOpened:false,
+        editing:false,
+        inputValue: props.content,
+        likes: props.likes
+    }
+
+
     const [note, setNote] = useState(props)
-    const [userData, setUserData] = useState({photoURL:'', name:'Loading...'})
+    
+    
 
     const isMyPost = currentUser && currentUser.uid == note.userId
+
 
     const loader = useContext(LoadingContext)
     
@@ -31,14 +77,9 @@ export function Post({props, currentUser}) {
     const [likes, setLikes] = useState(note.likes)
     const isLiked = currentUser ? likes.includes(currentUser.uid) : false
 
-    const updateUserData = async() => {
-        setUserData(await getUserData(note.userId))
-    }
+    
 
-    //get userData
-    useEffect(() => {
-        updateUserData()
-    }, [])
+
 
 
     const handleLiked = async () => {
@@ -53,11 +94,9 @@ export function Post({props, currentUser}) {
                 });
             }else {
                 const userId = likes.indexOf(currentUser.uid)
-                setLikes([...likes.slice(0, userId), ...likes.slice(userId + 1, likes.length)])
+                const newLikes = [...likes.slice(0, userId), ...likes.slice(userId + 1, likes.length)]
 
-                await updateDoc(noteRef, {
-                    likes:[...likes.slice(0, userId), ...likes.slice(userId + 1, likes.length)]
-                });
+                dispatch()
             }
         }else {
             navigate('/auth')
@@ -69,6 +108,7 @@ export function Post({props, currentUser}) {
     const handleEditing = () => {
         setEditing(!editing)
     }
+    
     const handleEdited = async () => {
         updateData({content:inputValue}, 'notes', note.id)
 
@@ -80,12 +120,11 @@ export function Post({props, currentUser}) {
     return(
         <div className={`${styles.container}`}>
             <div className={styles.upper}>
-                <Link to={`/profile?id=${note.userId}`} state={note.userId} className={styles.profile}>
-                    <img src={userData.photoURL} />
-                    <p>{userData.name}</p>
-                </Link>
 
+                <ProfileData userId={note.userId} />
+                
                 {
+                // Edit Button
                 isMyPost && 
                 <div className={styles.edit} onClick={handleEditing}>
                     <img src="https://www.freeiconspng.com/thumbs/edit-icon-png/edit-editor-pen-pencil-write-icon--4.png" alt="" />
@@ -129,5 +168,17 @@ export function Post({props, currentUser}) {
             </div>
             {commentOpened && <CommentSection comments={note.comments}/>}
         </div>
+    )
+}
+
+const ProfileData = ({userId}) => {
+
+    const {data:userData} = useQuery({ queryKey: ['userData', userId], queryFn: async() => {return await getUserData(userId)}})
+
+    return (
+        <Link to={`/profile?id=${userId}`} state={userId} className={styles.profile}>
+            <img src={userData?.photoURL} />
+            <p>{userData?.name}</p>
+        </Link>
     )
 }
